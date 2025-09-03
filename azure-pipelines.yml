@@ -22,3 +22,17 @@ steps:
     contents: '**'
     targetFolder: '/build'
     readyTimeout: '20000'
+- task: SSH@0
+  inputs:
+    sshEndpoint: 'Dev'
+    runOptions: 'inline'
+    inline: |
+      #Unit Testing
+      echo "unit testing started"
+      if grep 'Fatel' /build/index.html; then
+       echo "Test is failed in following number of line"
+       sed -n '/Fatel/=' /build/index.html
+       exit 1
+      fi
+      echo "Unit Test is Successful"
+    readyTimeout: '20000'
